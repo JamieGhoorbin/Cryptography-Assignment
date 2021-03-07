@@ -20,13 +20,20 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        String cipher = readFile("./cexercise3.txt");
-
-        VigenereDecrypt ex = new VigenereDecrypt(cipher, 6);
-        ex.decrypt();
+        String ex2 = readFile("./cexercise2.txt");
+        String ex3 = readFile("./cexercise3.txt");
 
 
-//         System.out.println(cipher.length());
+        VigenereDecrypt vd1 = new VigenereDecrypt(ex2, "TESSOFTHEDURBERVILLES");
+        System.out.println("Exercise 2---------------");
+        vd1.decryptWithKey();
+
+        VigenereDecrypt vd2 = new VigenereDecrypt(ex3, 6);
+        System.out.println("Exercise 3---------------");
+        vd2.decryptKeyLengthKnown();
+
+
+
 
     }
 }

@@ -10,7 +10,7 @@ public class VigenereDecrypt {
     private final int keyLength;
     private ArrayList<HashMap<Character, Double>> groups;
     private Map<Character, Double> englishLetterFreq;
-    private StringBuilder key;
+    private String key;
     private String cipher;
 
     public VigenereDecrypt(String cipher, int keyLength) {
@@ -18,20 +18,42 @@ public class VigenereDecrypt {
         this.groups = new ArrayList<>(keyLength);
         englishLetterFreq = new HashMap<>();
         this.cipher = cipher;
-        this.key = new StringBuilder();
+        this.key = "";
     }
 
     // Overload constructor when doing without key length. Key length is init when known.
+    public VigenereDecrypt(String cipher, String key) {
+        this.cipher = cipher;
+        this.key = key;
+        this.keyLength = key.length();
+        this.groups = null;
+        englishLetterFreq = null;
+    }
 
-    public void decrypt() {
-        // Initialise n (keyLength) groups
-        initGroups();
-        populateGroups();
-        populateEnglishLetterFreq();
-        calculateFreqForGroups();
-        calculateKey();
-        printKey();
-        decryptCipher(cipher, key.toString());
+    public void decryptKeyLengthKnown() {
+        if (!(this.groups == null || this.englishLetterFreq == null)) {
+            // Initialise n (keyLength) groups
+            initGroups();
+            populateGroups();
+            populateEnglishLetterFreq();
+            calculateFreqForGroups();
+            calculateKey();
+            printKey();
+            decryptCipher(cipher, key);
+        } else {
+            System.err.println("Error: Unable to perform this operation...");
+        }
+
+    }
+
+    public void decryptWithKey() {
+        if (!getKey().equals("")) {
+            printKey();
+            decryptCipher(cipher, key);
+        } else {
+            System.err.println("Error: No key provided...");
+        }
+
     }
 
     private void populateEnglishLetterFreq() {
@@ -116,7 +138,7 @@ public class VigenereDecrypt {
     }
 
     private void calculateKey() {
-        // engFreqVal[A].val * group0[A].val + engFreqVal[B].val * group0[B].val ...
+        StringBuilder keySb = new StringBuilder();
         ArrayList<Double> tempList = new ArrayList<>();
         Double count = 0.0;
 
@@ -139,17 +161,18 @@ public class VigenereDecrypt {
             Integer indexOfMaxValue = IntStream.range(0, tempList.size()).boxed()
                     .max(Comparator.comparing(tempList::get)).orElse(-1);
 
-            key.append((char) (indexOfMaxValue + 65));
+            keySb.append((char) (indexOfMaxValue + 65));
             // clear arrayList and do next group
             tempList.clear(); // empty arraylist
         }
+        updateKey(keySb.toString());
     }
 
     private void printKey() {
         System.out.println("Key: " + key);
     }
 
-    public void decryptCipher(String ciphertext, String key) {
+    private void decryptCipher(String ciphertext, String key) {
         StringBuilder sb = new StringBuilder();
 
         for (int i = 0; i < ciphertext.length(); i++) {
@@ -163,5 +186,13 @@ public class VigenereDecrypt {
 
     public String getCipher() {
         return cipher;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    private void updateKey(String key) {
+        this.key = key;
     }
 }
