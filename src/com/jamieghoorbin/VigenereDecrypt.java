@@ -1,12 +1,12 @@
 package com.jamieghoorbin;
 
-/**
- * A Vigenere decryption class for solving questions 2, 3, 4 of the
- * "CO634 Cryptography Assignment". The class is capable of decrypting
- * uppercase ciphertext when the key is known and when the key is unknown.
- *
- * @author Jamie Ghoorbin
- * @version 2021.03.06
+/*
+  A Vigenere decryption class for solving questions 2, 3, 4 of the
+  "CO634 Cryptography Assignment". The class is capable of decrypting
+  uppercase ciphertext when the key is known and when the key is unknown.
+
+  @author Jamie Ghoorbin
+  @version 2021.03.06
  */
 
 import java.util.ArrayList;
@@ -122,7 +122,7 @@ public class VigenereDecrypt {
      */
     private void initGroups() {
         for (int i = 0; i < keyLength; i++) {
-            groups.add(new HashMap<Character, Double>());
+            groups.add(new HashMap<>());
             for (char ch = 'A'; ch <= 'Z'; ++ch) {
                 groups.get(i).put(ch, 0.0);
             }
@@ -169,7 +169,7 @@ public class VigenereDecrypt {
     private void calculateKey() {
         StringBuilder keySb = new StringBuilder();
         ArrayList<Double> tempList = new ArrayList<>();
-        Double count = 0.0;
+        double count = 0.0;
 
         for (int i = 0; i < keyLength; i++) { // 6 groups
             HashMap<Character, Double> group = groups.get(i);
