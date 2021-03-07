@@ -1,5 +1,14 @@
 package com.jamieghoorbin;
 
+/**
+ * A Vigenere decryption class for solving questions 2, 3, 4 of the
+ * "CO634 Cryptography Assignment". The class is capable of decrypting
+ * uppercase ciphertext when the key is known and when the key is unknown.
+ *
+ * @author Jamie Ghoorbin
+ * @version 2021.03.06
+ */
+
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -13,6 +22,12 @@ public class VigenereDecrypt {
     private String key;
     private String cipher;
 
+
+    /**
+     *
+     * @param cipher
+     * @param keyLength
+     */
     public VigenereDecrypt(String cipher, int keyLength) {
         this.keyLength = keyLength;
         this.groups = new ArrayList<>(keyLength);
@@ -21,7 +36,11 @@ public class VigenereDecrypt {
         this.key = "";
     }
 
-    // Overload constructor when doing without key length. Key length is init when known.
+    /**
+     *
+     * @param cipher
+     * @param key
+     */
     public VigenereDecrypt(String cipher, String key) {
         this.cipher = cipher;
         this.key = key;
@@ -30,6 +49,9 @@ public class VigenereDecrypt {
         englishLetterFreq = null;
     }
 
+    /**
+     *
+     */
     public void decryptKeyLengthKnown() {
         if (!(this.groups == null || this.englishLetterFreq == null)) {
             // Initialise n (keyLength) groups
@@ -46,6 +68,9 @@ public class VigenereDecrypt {
 
     }
 
+    /**
+     * Decrypts a ciphertext when the key is known.
+     */
     public void decryptWithKey() {
         if (!getKey().equals("")) {
             printKey();
@@ -56,6 +81,9 @@ public class VigenereDecrypt {
 
     }
 
+    /**
+     * Populates the map of english letter frequencies.
+     */
     private void populateEnglishLetterFreq() {
         englishLetterFreq.put('A', 8.2);
         englishLetterFreq.put('B', 1.5);
@@ -89,17 +117,9 @@ public class VigenereDecrypt {
         return groups.get(groupIndex);
     }
 
-    public void printGroup(int groupIndex) {
-        getGroup(groupIndex).entrySet().forEach(entry -> {
-            System.out.println(entry.getKey() + " " + entry.getValue());
-        });
-    }
-
-    public void printMaxGroup(int groupIndex) {
-        Character x = getGroup(groupIndex).entrySet().stream().max((entry1, entry2) -> entry1.getValue() > entry2.getValue() ? 1 : -1).get().getKey();
-        System.out.println(x);
-    }
-
+    /**
+     *
+     */
     private void initGroups() {
         for (int i = 0; i < keyLength; i++) {
             groups.add(new HashMap<Character, Double>());
@@ -109,6 +129,9 @@ public class VigenereDecrypt {
         }
     }
 
+    /**
+     *
+     */
     private void populateGroups() {
         for (int i = 0; i < getCipher().length(); i++) {
             HashMap<Character, Double> map = groups.get(i % keyLength);
@@ -121,6 +144,9 @@ public class VigenereDecrypt {
         }
     }
 
+    /**
+     *
+     */
     private void calculateFreqForGroups() {
         for (int i = 0; i < keyLength; i++) {
             HashMap<Character, Double> group = groups.get(i);
@@ -137,6 +163,9 @@ public class VigenereDecrypt {
         }
     }
 
+    /**
+     *
+     */
     private void calculateKey() {
         StringBuilder keySb = new StringBuilder();
         ArrayList<Double> tempList = new ArrayList<>();
@@ -168,10 +197,18 @@ public class VigenereDecrypt {
         updateKey(keySb.toString());
     }
 
+    /**
+     *
+     */
     private void printKey() {
         System.out.println("Key: " + key);
     }
 
+    /**
+     *
+     * @param ciphertext
+     * @param key
+     */
     private void decryptCipher(String ciphertext, String key) {
         StringBuilder sb = new StringBuilder();
 
@@ -184,14 +221,26 @@ public class VigenereDecrypt {
         System.out.println("Decrypted ciphertext: " + sb.toString());
     }
 
+    /**
+     *
+     * @return
+     */
     public String getCipher() {
-        return cipher;
+        return this.cipher;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getKey() {
-        return key;
+        return this.key;
     }
 
+    /**
+     *
+     * @param key the key.
+     */
     private void updateKey(String key) {
         this.key = key;
     }

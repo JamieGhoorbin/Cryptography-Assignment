@@ -27,10 +27,13 @@ public class Main {
         VigenereDecrypt vd1 = new VigenereDecrypt(ex2, "TESSOFTHEDURBERVILLES");
         System.out.println("Exercise 2---------------");
         vd1.decryptWithKey();
+        System.out.println();
 
         VigenereDecrypt vd2 = new VigenereDecrypt(ex3, 6);
         System.out.println("Exercise 3---------------");
         vd2.decryptKeyLengthKnown();
+        System.out.println();
+
 
 
 
