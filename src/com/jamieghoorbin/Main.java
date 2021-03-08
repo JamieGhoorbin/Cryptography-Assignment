@@ -24,6 +24,7 @@ public class Main {
     }
 
     public static void main(String[] args) {
+        String ex1 = readFile("./cexercise1.txt");
         String ex2 = readFile("./cexercise2.txt");
         String ex3 = readFile("./cexercise3.txt");
         String ex4 = readFile("./cexercise4.txt");
@@ -60,9 +61,6 @@ public class Main {
         for(int i = 4; i < 7; ++i) {
             listOfStuff.put(i, ioc.calculateIC(i));
         }
-
-
-
         VigenereDecrypt vd4 = new VigenereDecrypt(ex4, 6);
         System.out.println("Exercise 4---------------");
         listOfStuff.entrySet().forEach(entry->{
