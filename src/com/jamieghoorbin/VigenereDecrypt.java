@@ -118,7 +118,8 @@ public class VigenereDecrypt {
     }
 
     /**
-     *
+     * Initialise n groups each containing an A-Z mapping and count.
+     * @param keyLength the key length.
      */
     private void initGroups(int keyLength) {
         for (int i = 0; i < keyLength; i++) {
@@ -130,7 +131,7 @@ public class VigenereDecrypt {
     }
 
     /**
-     *
+     * Populate the groups of n size and distribute the cipher text.
      */
     private void populateGroups() {
         for (int i = 0; i < getCipher().length(); i++) {
@@ -200,16 +201,16 @@ public class VigenereDecrypt {
     }
 
     /**
-     *
+     * Print the key.
      */
     private void printKey() {
         System.out.println("Key: " + key);
     }
 
     /**
-     *
-     * @param ciphertext
-     * @param key
+     * Decrypts the ciphertext with a given key.
+     * @param ciphertext the ciphertext.
+     * @param key the key.
      */
     private void decryptCipher(String ciphertext, String key) {
         StringBuilder sb = new StringBuilder();
@@ -232,7 +233,7 @@ public class VigenereDecrypt {
     }
 
     /**
-     *  Get the key.
+     *  Return the key.
      * @return the key.
      */
     public String getKey() {

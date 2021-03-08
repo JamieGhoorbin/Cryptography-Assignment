@@ -10,6 +10,11 @@ import java.util.List;
 
 public class Main {
 
+    /**
+     * A simple method to read a file.
+     * @param filename the file.
+     * @return the file content.
+     */
     public static String readFile (String filename) {
         StringBuilder result = new StringBuilder();
         try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
@@ -28,7 +33,28 @@ public class Main {
         String ex2 = readFile("./cexercise2.txt");
         String ex3 = readFile("./cexercise3.txt");
         String ex4 = readFile("./cexercise4.txt");
+//        String ex5 = readFile("./cexercise5.txt");
+//        String ex6 = readFile("./cexercise6.txt");
+//        String ex7 = readFile("./cexercise7.txt");
 
+/*
+        Exercise 1 (2 marks)
+        The plaintext comes from tess26.txt and is encoded with a Caesar cipher.
+*/
+        CaesarDecrypt cd = new CaesarDecrypt();
+        System.out.println("Exercise 1---------------");
+        for(int i = 0 ; i < 26; i++) {
+            if(i==0) {
+                System.out.println("Original Ciphertext:             " + cd.decryptBruteForce(ex1,i));
+            } else {
+                if(i<10) {
+                    System.out.println("Potential plaintext [shift:" + i + "]:   " + cd.decryptBruteForce(ex1,i));
+                } else {
+                    System.out.println("Potential plaintext [shift:" + i + "]:  " + cd.decryptBruteForce(ex1,i));
+                }
+            }
+        }
+        System.out.println();
 
 /*
         Exercise 2 (3 marks)
@@ -63,10 +89,9 @@ public class Main {
         }
         VigenereDecrypt vd4 = new VigenereDecrypt(ex4, 6);
         System.out.println("Exercise 4---------------");
-        listOfStuff.entrySet().forEach(entry->{
-            System.out.println("KeyLength: " + entry.getKey() + ", IOC value: " + entry.getValue());
-        });
-        System.out.println("Using key length 6 since the IOC value is the highest.");
+        listOfStuff.forEach((key, value) -> System.out.println("KeyLength: " + key + ", IOC value: " + value));
+        System.out.println("Since key length of 6 is the highest and closest IOC value to the monoalphabetic " +
+                "distribution, we use this value as our assumed key length.");
         vd4.decryptKeyLengthKnown();
         System.out.println();
 
