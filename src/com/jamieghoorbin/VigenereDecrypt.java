@@ -53,9 +53,9 @@ public class VigenereDecrypt {
      *
      */
     public void decryptKeyLengthKnown() {
-        if (!(this.groups == null || this.englishLetterFreq == null)) {
+        if (!(this.groups == null || this.englishLetterFreq == null || this.keyLength == 0)) {
             // Initialise n (keyLength) groups
-            initGroups();
+            initGroups(keyLength);
             populateGroups();
             populateEnglishLetterFreq();
             calculateFreqForGroups();
@@ -120,7 +120,7 @@ public class VigenereDecrypt {
     /**
      *
      */
-    private void initGroups() {
+    private void initGroups(int keyLength) {
         for (int i = 0; i < keyLength; i++) {
             groups.add(new HashMap<>());
             for (char ch = 'A'; ch <= 'Z'; ++ch) {
@@ -164,15 +164,17 @@ public class VigenereDecrypt {
     }
 
     /**
-     *
+     * Calculate the key.
      */
     private void calculateKey() {
         StringBuilder keySb = new StringBuilder();
         ArrayList<Double> tempList = new ArrayList<>();
         double count = 0.0;
 
+        // Loop over n groups.
         for (int i = 0; i < keyLength; i++) { // 6 groups
             HashMap<Character, Double> group = groups.get(i);
+            //
             for (char ch1 = 'A'; ch1 <= 'Z'; ++ch1) {
                 for (char ch2 = 'A'; ch2 <= 'Z'; ++ch2) { // shift
                     Double engFreqVal = englishLetterFreq.get(ch2);
@@ -222,26 +224,28 @@ public class VigenereDecrypt {
     }
 
     /**
-     *
-     * @return
+     * Return the ciphertext.
+     * @return the ciphertext.
      */
     public String getCipher() {
         return this.cipher;
     }
 
     /**
-     *
-     * @return
+     *  Get the key.
+     * @return the key.
      */
     public String getKey() {
         return this.key;
     }
 
     /**
-     *
+     * Update the key.
      * @param key the key.
      */
     private void updateKey(String key) {
         this.key = key;
     }
+
+
 }
