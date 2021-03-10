@@ -83,6 +83,7 @@ public class VigenereDecrypt {
 
     /**
      * Populates the map of english letter frequencies.
+     * Values obtained from: https://en.wikipedia.org/wiki/Letter_frequency
      */
     private void populateEnglishLetterFreq() {
         englishLetterFreq.put('A', 8.2);
