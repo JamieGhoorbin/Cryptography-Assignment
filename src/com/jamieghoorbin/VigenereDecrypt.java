@@ -3,7 +3,7 @@ package com.jamieghoorbin;
 /*
   A Vigenere decryption class for solving questions 2, 3, 4 of the
   "CO634 Cryptography Assignment". The class is capable of decrypting
-  uppercase ciphertext when the key is known and when the key is unknown.
+  uppercase ciphertext when provided the correct number of columns.
 
   @author Jamie Ghoorbin
   @version 2021.03.06
@@ -24,7 +24,7 @@ public class VigenereDecrypt {
 
 
     /**
-     *
+     * VigenereDecrypt when the key length is known.
      * @param cipher
      * @param keyLength
      */
@@ -37,7 +37,7 @@ public class VigenereDecrypt {
     }
 
     /**
-     *
+     * VigenereDecrypt when the key is known.
      * @param cipher
      * @param key
      */
@@ -50,9 +50,9 @@ public class VigenereDecrypt {
     }
 
     /**
-     *
+     *  Decrypts text encrypted with a Vigenere cipher when the key length is known.
      */
-    public void decryptKeyLengthKnown() {
+    public String[] decryptKeyLengthKnown() {
         if (!(this.groups == null || this.englishLetterFreq == null || this.keyLength == 0)) {
             // Initialise n (keyLength) groups
             initGroups(keyLength);
@@ -60,23 +60,24 @@ public class VigenereDecrypt {
             populateEnglishLetterFreq();
             calculateFreqForGroups();
             calculateKey();
-            printKey();
-            decryptCipher(cipher, key);
+            String decryptedText = decryptCipher(getCipher(), getKey());
+            return new String[]{decryptedText, getKey()};
         } else {
-            System.err.println("Error: Unable to perform this operation...");
+            return new String[]{"Error", "Error: Unable to perform this operation..."};
         }
-
     }
 
     /**
      * Decrypts a ciphertext when the key is known.
+     * @return Return the decryptedText and key; otherwise an empty string and error.
      */
-    public void decryptWithKey() {
+    public String[] decryptWithKey() {
         if (!getKey().equals("")) {
-            printKey();
-            decryptCipher(cipher, key);
+            String key = getKey();
+            String decryptedText = decryptCipher(getCipher(), key);
+            return new String[]{decryptedText, key};
         } else {
-            System.err.println("Error: No key provided...");
+            return new String[]{"Error","Error: No key provided..."};
         }
 
     }
@@ -147,7 +148,7 @@ public class VigenereDecrypt {
     }
 
     /**
-     *
+     * Calculates the frequency of the letters in the encrypted message for each group.
      */
     private void calculateFreqForGroups() {
         for (int i = 0; i < keyLength; i++) {
@@ -202,18 +203,11 @@ public class VigenereDecrypt {
     }
 
     /**
-     * Print the key.
-     */
-    private void printKey() {
-        System.out.println("Key: " + key);
-    }
-
-    /**
      * Decrypts the ciphertext with a given key.
      * @param ciphertext the ciphertext.
      * @param key the key.
      */
-    private void decryptCipher(String ciphertext, String key) {
+    private String decryptCipher(String ciphertext, String key) {
         StringBuilder sb = new StringBuilder();
 
         for (int i = 0; i < ciphertext.length(); i++) {
@@ -222,7 +216,7 @@ public class VigenereDecrypt {
             String s = String.valueOf((char) (cipherModKey + 'A'));
             sb.append(s);
         }
-        System.out.println("Decrypted ciphertext: " + sb.toString());
+        return sb.toString();
     }
 
     /**

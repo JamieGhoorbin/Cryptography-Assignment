@@ -1,7 +1,9 @@
 package com.jamieghoorbin;
 
  /*
-
+  A Transposition decryption class for solving questions 5 and 6 of the
+  "CO634 Cryptography Assignment". The class is capable of decrypting
+  uppercase ciphertext when the key is known and when the key is unknown.
 
  Bigram data obtained from: http://norvig.com/mayzner.html
  */
@@ -89,33 +91,37 @@ public class TranspositionDecrypt {
         return new String[]{str.substring(0, stringLen), str.substring(stringLen)};
     }
 
+    /**
+     * Returns the ciphertext.
+     * @return the ciphertext.
+     */
     public String getCipher() {
         return cipher;
     }
 
     /**
-     *
-     * @param noOfColumns
-     * @return
+     * The driver code to decrypt the ciphertext.
+     * @param noOfColumns the number of columns used to encrypt the text.
+     * @return the key and decrypted text.
      */
     public String[] decrypt(int noOfColumns) {
         ArrayList<String> columnsOfText = new ArrayList<>();
         HashMap<Pair<Integer,Integer>, Double> scores = new HashMap<>();
         populateGroups(noOfColumns, columnsOfText);
-
-        // Note to oneself: noOfColumns params can be derived from columnsOfText.size()
         permuteAndScoreColumns(noOfColumns, columnsOfText, scores);
 
-        // Steps
-        // Order the Pairs and form the string from each column
         String key = formatKey(noOfColumns, scores);
         String text = decryptWithKey(key, columnsOfText);
-
-        // If it contains common bi/tri/words? then stop and return, else null/empty
 
         return new String[]{key, text};
     }
 
+    /**
+     * Decrypts the text with the given key.
+     * @param key the key.
+     * @param columnsOfText a list containing the each column of text.
+     * @return the decrypted text.
+     */
     private String decryptWithKey(String key, ArrayList<String> columnsOfText) {
         int longestColumn = 0;
         for(String str: columnsOfText) {
@@ -137,10 +143,10 @@ public class TranspositionDecrypt {
     }
 
     /**
-     *
-     * @param noOfColumns
-     * @param columnsOfText
-     * @param scores
+     * Permutes each column of encrypted text with another column and scores based on a column pair forming a bigram.
+     * @param noOfColumns the number of columns used.
+     * @param columnsOfText the columns of ciphertext.
+     * @param scores the score map - stores column pair (index) and the associated score.
      */
     private void permuteAndScoreColumns(int noOfColumns, ArrayList<String> columnsOfText, HashMap<Pair<Integer,Integer>, Double> scores) {
         // Take columnsOfText and pass to method that returns the highest permute score
@@ -163,22 +169,28 @@ public class TranspositionDecrypt {
         }
     }
 
+    /**
+     * Forms a key using the scored column pair.
+     * Note to oneself: this algorithm needs improving, for example when a key can not be formed.
+     * @param noOfColumns the number of columns.
+     * @param scores the scores map.
+     * @return the key.
+     */
     private String formatKey(int noOfColumns, HashMap<Pair<Integer,Integer>, Double> scores) {
         // List to store Key Pair in string format.
         LinkedList<String> keys = new LinkedList<>();
 
-        // Sort by score and add the keys in string format to the list.
+        // Sort by score and add the keys in string format to the (linked)list.
         scores.entrySet().stream().sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
                 .forEachOrdered(e -> keys.add(e.getKey().toString()));
 
         StringBuilder _result = new StringBuilder();
         // remove first key and add to string builder.
         _result.append(keys.remove());
-        // remove last item
-        keys.removeLast();
+        // remove last item - left for now, can be used to check end key value.
+        String last = String.valueOf(keys.removeLast().charAt(0));
 
         while (_result.length() != noOfColumns) {
-
             String second = keys.remove();
 
             if (_result.charAt(0) == second.charAt(1)) { // outer match
@@ -186,14 +198,14 @@ public class TranspositionDecrypt {
             } else if (_result.charAt(_result.length() - 1) == second.charAt(0)) { // inner match
                 _result.append(second.charAt(1));
             } else {
-                keys.add(second); // otherwise add key to end of list
+                keys.add(second); // otherwise add back the key to the end of list.
             }
         }
         return _result.toString();
     }
 
     /**
-     * Business logic of diving the ciphertext and populating the columns.
+     * Business logic of dividing the ciphertext and populating the columns.
      * @param noOfColumns the number of columns to divide the string by.
      * @param list the list to populate.
      */
