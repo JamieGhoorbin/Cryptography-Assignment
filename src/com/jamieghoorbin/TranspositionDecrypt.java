@@ -21,6 +21,23 @@ public class TranspositionDecrypt {
     }
 
     /**
+     * The driver code to decrypt the ciphertext.
+     * @param noOfColumns the number of columns used to encrypt the text.
+     * @return the key and decrypted text.
+     */
+    public String[] decrypt(int noOfColumns) {
+        ArrayList<String> columnsOfText = new ArrayList<>();
+        HashMap<Pair<Integer,Integer>, Double> scores = new HashMap<>();
+        populateGroups(noOfColumns, columnsOfText);
+        permuteAndScoreColumns(noOfColumns, columnsOfText, scores);
+
+        String key = formatKey(noOfColumns, scores);
+        String text = decryptWithKey(key, columnsOfText);
+
+        return new String[]{key, text};
+    }
+
+    /**
      * Initialise the bigram frequency map.
      */
     private void initBigramMap() {
@@ -97,23 +114,6 @@ public class TranspositionDecrypt {
      */
     public String getCipher() {
         return cipher;
-    }
-
-    /**
-     * The driver code to decrypt the ciphertext.
-     * @param noOfColumns the number of columns used to encrypt the text.
-     * @return the key and decrypted text.
-     */
-    public String[] decrypt(int noOfColumns) {
-        ArrayList<String> columnsOfText = new ArrayList<>();
-        HashMap<Pair<Integer,Integer>, Double> scores = new HashMap<>();
-        populateGroups(noOfColumns, columnsOfText);
-        permuteAndScoreColumns(noOfColumns, columnsOfText, scores);
-
-        String key = formatKey(noOfColumns, scores);
-        String text = decryptWithKey(key, columnsOfText);
-
-        return new String[]{key, text};
     }
 
     /**
@@ -214,7 +214,7 @@ public class TranspositionDecrypt {
         String cipherText = getCipher();
         final int cipherLen = getCipher().length(); // 31
         int oddCols = cipherLen%noOfColumns; // 31 mod 5 = 1, therefore 1 odd col
-        int equalCols = ((cipherLen - (cipherLen%noOfColumns))/noOfColumns); // 31 - (31 mod 5) = 30
+        int equalCols = ((cipherLen - (cipherLen%noOfColumns))/noOfColumns); // 31 - (31 mod 5) = 30, 30/5=6
         boolean equallyDivides = (oddCols)==0; // false
 
         for(int col = 0; col < noOfColumns; col++) {

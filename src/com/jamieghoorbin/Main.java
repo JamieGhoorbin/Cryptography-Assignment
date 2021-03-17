@@ -137,9 +137,11 @@ public class Main {
         itself. Note that normally (i.e. except by chance) a vertical bar will be mapped
         onto some other letter of the alphabet.
         */
-//        GeneralSubstitutionDecrypt gsd = new GeneralSubstitutionDecrypt(ex7);
-//        gsd.test();
-
+        System.out.println("-------------------------------------------------------------");
+        System.out.println("Exercise 7");
+        GeneralSubstitutionDecrypt gsd = new GeneralSubstitutionDecrypt(ex7);
+        gsd.test();
+        System.out.println("-------------------------------------------------------------");
     }
 
     /**
